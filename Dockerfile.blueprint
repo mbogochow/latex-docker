@@ -1,5 +1,5 @@
 # Remember to change your base version if needed
-FROM mbogochow/latex:ctanbasic
+FROM ghcr.io/mbogochow/latex:ctanbasic
 
 # Collection of recipes for common setups
 

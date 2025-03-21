@@ -1,4 +1,4 @@
-FROM mbogochow/latex:ctanbasic
+FROM ghcr.io/mbogochow/latex:ctanbasic
 MAINTAINER Mike Bogochow
 
 RUN tlmgr install scheme-full
