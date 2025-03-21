@@ -2,17 +2,20 @@ NS = mbogochow
 REPO = latex
 IMAGE = $(NS)/$(REPO)
 
+DOCKER_CMD = $(if $(shell command -v docker 2>/dev/null), docker, podman)
+
 .PHONY: build build_ubuntu build_basic build_full
 
 build: build_ubuntu build_basic build_full
 
 build_ubuntu: Dockerfile.ubuntu
-	@docker build -f Dockerfile.ubuntu -t $(IMAGE):ubuntu .
+	@$(DOCKER_CMD) build -f Dockerfile.ubuntu -t $(IMAGE):ubuntu .
 
 build_basic: Dockerfile.basic
-	@docker build -f Dockerfile.basic -t $(IMAGE):ctanbasic .
+	@$(DOCKER_CMD) build -f Dockerfile.basic -t $(IMAGE):ctanbasic .
 
 build_full: build_basic Dockerfile.full
-	@docker build -f Dockerfile.full -t $(IMAGE):ctanfull .
+	@$(DOCKER_CMD) build -f Dockerfile.full -t $(IMAGE):ctanfull .
 
 default: build
+.github/workflows/docker-image.yml
