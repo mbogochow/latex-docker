@@ -1,5 +1,5 @@
 # Remember to change your base version if needed
-FROM blang/latex:ctanbasic
+FROM mbogochow/latex:ctanbasic
 
 # Collection of recipes for common setups
 

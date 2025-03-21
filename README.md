@@ -1,4 +1,4 @@
-Latex docker container [![Docker hub](https://img.shields.io/docker/pulls/blang/latex.svg)](https://hub.docker.com/r/blang/latex/)
+Latex docker container
 ======================
 
 This container helps compiling latex sources without the need to install all latex packages on your system.
@@ -13,18 +13,18 @@ Why should I use this container?
 
 Versions
 --------
-All versions are based on Ubuntu: ([See all tags](https://hub.docker.com/r/blang/latex/))
+All versions are based on Ubuntu: ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex-docker))
 
-- [blang/latex:ubuntu (:latest) - Dockerfile.ubuntu](Dockerfile.ubuntu) Ubuntu TexLive distribution: Old but stable, most needed package: texlive-full (3.9GB)
-- [blang/latex:ctanbasic - Dockerfile.basic](Dockerfile.basic) CTAN TexLive Scheme-basic: Up-to-date, only basic packages, base for custom builds (500MB)
-- [blang/latex:ctanfull - Dockerfile.full](Dockerfile.full) CTAN TexLive Scheme-full: Up-to-date, all packages (5.6GB)
+- [mbogochow/latex:ubuntu (:latest) - Dockerfile.ubuntu](Dockerfile.ubuntu) Ubuntu TexLive distribution: Old but stable, most needed package: texlive-full (3.9GB)
+- [mbogochow/latex:ctanbasic - Dockerfile.basic](Dockerfile.basic) CTAN TexLive Scheme-basic: Up-to-date, only basic packages, base for custom builds (500MB)
+- [mbogochow/latex:ctanfull - Dockerfile.full](Dockerfile.full) CTAN TexLive Scheme-full: Up-to-date, all packages (5.6GB)
 
 If you need...
-- ...the most-stuff-works-out-of-the-box package, try `blang/latex:ubuntu`.
-- ...the most recent version of everything, try `blang/latex:ctanfull`.
-- ...a stable base for your custom texlive build, try `blang/latex:ctanbasic`.
+- ...the most-stuff-works-out-of-the-box package, try `mbogochow/latex:ubuntu`.
+- ...the most recent version of everything, try `mbogochow/latex:ctanfull`.
+- ...a stable base for your custom texlive build, try `mbogochow/latex:ctanbasic`.
 
-For stability, choose a more specific version tag ([See all tags](https://hub.docker.com/r/blang/latex/))
+For stability, choose a more specific version tag ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex-docker))
 
 Quick Setup
 -----------
@@ -35,10 +35,10 @@ Compile latex sources using docker:
 cd my_latex_project
 
 # Download the command wrapper and make it executable
-wget https://raw.githubusercontent.com/blang/latex-docker/master/latexdockercmd.sh
+wget https://raw.githubusercontent.com/mbogochow/latex-docker/master/latexdockercmd.sh
 chmod +x latexdockercmd.sh
 
-# Optional: Change the version (see above, default blang/latex:ubuntu)
+# Optional: Change the version (see above, default mbogochow/latex:ubuntu)
 edit ./latexdockercmd.sh
 
 # Compile using pdflatex (docker will pull the image automatically)
@@ -88,7 +88,7 @@ If software is missing, extend this base image with your own software:
 
 Create a Dockerfile or download [Dockerfile.blueprint](Dockerfile.blueprint) for examples:
 ```
-FROM blang/latex:ubuntu
+FROM mbogochow/latex:ubuntu
 
 # Minted + Pygments
 RUN tlmgr install minted

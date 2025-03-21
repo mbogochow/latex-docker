@@ -1,5 +1,5 @@
-FROM ubuntu:xenial
-MAINTAINER Benedikt Lang <mail@blang.io>
+FROM ubuntu:noble
+MAINTAINER Mike Bogochow
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -q \
@@ -15,7 +15,11 @@ RUN wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; \
     rm -r /install-tl-unx; \
 	rm install-tl-unx.tar.gz
 
-ENV PATH="/usr/local/texlive/2017/bin/x86_64-linux:${PATH}"
+# Get the current year during the build
+ARG BUILD_YEAR=$(date +%Y)
+ENV BUILD_YEAR=$BUILD_YEAR
+
+ENV PATH="/usr/local/texlive/${BUILD_YEAR}/bin/x86_64-linux:${PATH}"
 
 ENV HOME /data
 WORKDIR /data

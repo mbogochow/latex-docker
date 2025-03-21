@@ -1,4 +1,4 @@
-NS = blang
+NS = mbogochow
 REPO = latex
 IMAGE = $(NS)/$(REPO)
 
