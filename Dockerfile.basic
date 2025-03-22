@@ -1,6 +1,6 @@
 FROM ubuntu:noble
 LABEL maintainer="Mike Bogochow"
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -q \
     && apt-get install -qy build-essential wget libfontconfig1 \
@@ -15,13 +15,11 @@ RUN wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; \
     rm -r /install-tl-unx; \
 	rm install-tl-unx.tar.gz
 
-# Get the current year during the build
-ARG BUILD_YEAR=$(date +%Y)
-ENV BUILD_YEAR=$BUILD_YEAR
+RUN cd /usr/local/texlive/ \
+    && ln -s $(find . -type d -regextype posix-egrep -regex '^./2[0-9]{3}$') current
+ENV PATH="/usr/local/texlive/current/bin/x86_64-linux:${PATH}"
 
-ENV PATH="/usr/local/texlive/${BUILD_YEAR}/bin/x86_64-linux:${PATH}"
-
-ENV HOME /data
+ENV HOME=/data
 WORKDIR /data
 
 # Install latex packages
