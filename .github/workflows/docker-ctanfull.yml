@@ -1,10 +1,18 @@
-name: Docker Image CI
+name: Docker CTANFull Image CI
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'Dockerfile.full'
+      - 'Dockerfile.basic'
+      - '.github/workflows/docker-ctanfull.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'Dockerfile.full'
+      - 'Dockerfile.basic'
+      - '.github/workflows/docker-ctanfull.yml'
 
 env:
   REGISTRY: ghcr.io
@@ -33,11 +41,24 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Build CTANBasic image (dependency)
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: Dockerfile.basic
+        push: false
+        load: true
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ctanbasic
+        cache-from: type=gha,scope=ctanbasic
+        cache-to: type=gha,mode=max,scope=ctanbasic
+
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        flavor: |
+          suffix=-ctanfull
         tags: |
           type=ref,event=branch
           type=ref,event=pr
@@ -45,22 +66,22 @@ jobs:
           type=semver,pattern={{major}}.{{minor}}
           type=sha
 
-    - name: Build and Push Docker image
+    - name: Build and Push CTANFull Docker image
       id: build-and-push
       uses: docker/build-push-action@v6
       with:
         context: .
-        file: Dockerfile.ubuntu
+        file: Dockerfile.full
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+        cache-from: type=gha,scope=ctanfull
+        cache-to: type=gha,mode=max,scope=ctanfull
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
+        image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}-ctanfull
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
