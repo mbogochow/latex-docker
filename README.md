@@ -13,7 +13,7 @@ Why should I use this container?
 
 Versions
 --------
-All versions are based on Ubuntu: ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex-docker))
+All versions are based on Ubuntu: ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex))
 
 - [mbogochow/latex:ubuntu (:latest) - Dockerfile.ubuntu](Dockerfile.ubuntu) Ubuntu TexLive distribution: Old but stable, most needed package: texlive-full (3.9GB)
 - [mbogochow/latex:ctanbasic - Dockerfile.basic](Dockerfile.basic) CTAN TexLive Scheme-basic: Up-to-date, only basic packages, base for custom builds (500MB)
@@ -24,7 +24,7 @@ If you need...
 - ...the most recent version of everything, try `mbogochow/latex:ctanfull`.
 - ...a stable base for your custom texlive build, try `mbogochow/latex:ctanbasic`.
 
-For stability, choose a more specific version tag ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex-docker))
+For stability, choose a more specific version tag ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex))
 
 Quick Setup
 -----------
@@ -88,7 +88,7 @@ If software is missing, extend this base image with your own software:
 
 Create a Dockerfile or download [Dockerfile.blueprint](Dockerfile.blueprint) for examples:
 ```
-FROM mbogochow/latex:ubuntu
+FROM ghcr.io/mbogochow/latex:main
 
 # Minted + Pygments
 RUN tlmgr install minted
