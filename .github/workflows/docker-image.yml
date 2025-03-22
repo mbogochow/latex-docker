@@ -39,9 +39,11 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
-          type=sha
           type=ref,event=branch
           type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=sha
 
     - name: Build and Push Docker image
       id: build-and-push
@@ -58,7 +60,7 @@ jobs:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ${{ steps.meta.outputs.images }}@${{ steps.build-and-push.outputs.digest }}
+        image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
