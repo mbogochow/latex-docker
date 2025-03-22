@@ -18,4 +18,3 @@ build_full: build_basic Dockerfile.full
 	@$(DOCKER_CMD) build -f Dockerfile.full -t $(IMAGE):ctanfull .
 
 default: build
-.github/workflows/docker-image.yml
