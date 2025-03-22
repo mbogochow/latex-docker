@@ -1,5 +1,5 @@
 FROM ubuntu:noble
-MAINTAINER Mike Bogochow
+LABEL maintainer="Mike Bogochow"
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -q \
