@@ -4,14 +4,12 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'Dockerfile.full'
-      - 'Dockerfile.basic'
+      - 'Dockerfile'
       - '.github/workflows/docker-ctanfull.yml'
   pull_request:
     branches: [ "main" ]
     paths:
-      - 'Dockerfile.full'
-      - 'Dockerfile.basic'
+      - 'Dockerfile'
       - '.github/workflows/docker-ctanfull.yml'
 
 jobs:
@@ -19,7 +17,7 @@ jobs:
     uses: ./.github/workflows/common.yml
     with:
       image-suffix: ctanfull
-      dockerfile: Dockerfile.full
+      dockerfile: Dockerfile
+      target: full
       version: ${{ github.ref_name }}
       cache-scope: ctanfull
-      needs-basic: true

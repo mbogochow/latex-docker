@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:noble AS base
 LABEL maintainer="Mike Bogochow"
 
 ARG LATEX_UID=1000
@@ -40,3 +40,9 @@ RUN mkdir -p /data && chown latex:latex /data
 USER latex
 
 VOLUME ["/data"]
+
+# Full variant
+FROM base AS full
+USER root
+RUN tlmgr install scheme-full
+USER latex

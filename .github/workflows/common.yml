@@ -9,16 +9,15 @@ on:
       dockerfile:
         required: true
         type: string
+      target:
+        required: false
+        type: string
       version:
         required: true
         type: string
       cache-scope:
         required: true
         type: string
-      needs-basic:
-        required: false
-        type: boolean
-        default: false
 
 env:
   REGISTRY: ghcr.io
@@ -47,18 +46,6 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build CTANBasic image (dependency)
-      if: ${{ inputs.needs-basic }}
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        file: Dockerfile.basic
-        push: false
-        load: true
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ctanbasic
-        cache-from: type=gha,scope=ctanbasic
-        cache-to: type=gha,mode=max,scope=ctanbasic
-
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
@@ -79,6 +66,7 @@ jobs:
       with:
         context: .
         file: ${{ inputs.dockerfile }}
+        target: ${{ inputs.target }}
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}

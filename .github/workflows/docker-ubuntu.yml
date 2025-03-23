@@ -20,4 +20,3 @@ jobs:
       dockerfile: Dockerfile.ubuntu
       version: ${{ github.ref_name }}
       cache-scope: ubuntu
-      needs-basic: false
