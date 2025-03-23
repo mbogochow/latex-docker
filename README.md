@@ -84,15 +84,21 @@ docker stop latex_daemon
 Customize
 ---------
 
-If software is missing, extend this base image with your own software:
+If you need additional packages, extend this base image with your own customizations. Below are some example recipes for common setups that you can use as a starting point for your custom Dockerfile:
 
-Create a Dockerfile or download [Dockerfile.blueprint](Dockerfile.blueprint) for examples:
-```
+```dockerfile
+# Remember to change your base version if needed
 FROM ghcr.io/mbogochow/latex:main
 
-# Minted + Pygments
+# Example 1: Installing Minted + Pygments for code highlighting
 RUN tlmgr install minted
+RUN apt-get update \
+    && apt-get install -qy python python-pip \
+    && pip install pygments \
+    && rm -rf /var/lib/apt/lists/*
 ```
+
+You can create your own Dockerfile using any of these recipes or combine them based on your needs.
 
 Build your custom image:
 ```bash
