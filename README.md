@@ -132,12 +132,3 @@ Install texlive packages:
 ```
 RUN tlmgr install minted
 ```
-
-## Contribution
-
-If the image is missing a package only specific for you, please don't open an issue or pull request but build your own image as described above.
-If a critical package is missing or you have a recipe for missing packages in a common scenario, please create an issue / PR on [Dockerfile.blueprint](Dockerfile.blueprint).
-
-## License
-
-See [LICENSE](LICENSE) file.
