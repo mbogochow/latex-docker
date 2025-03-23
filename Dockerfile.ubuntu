@@ -1,13 +1,31 @@
 FROM ubuntu:noble
 LABEL maintainer="Mike Bogochow"
 
-ENV DEBIAN_FRONTEND noninteractive
+ARG LATEX_UID=1000
+ARG LATEX_GID=1000
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
+
+# Remove ubuntu user/group and create latex user
+RUN userdel -r ubuntu || true \
+    && groupdel ubuntu || true \
+    && groupadd -g ${LATEX_GID} latex \
+    && useradd -u ${LATEX_UID} -g latex -m latex
 
 RUN apt-get update -q && apt-get install -qy \
     texlive-full \
-    python3-pygments gnuplot \
-    make git \
-    && rm -rf /var/lib/apt/lists/*
+    python3-pygments \
+    gnuplot \
+    make \
+    git \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /data \
+    && chown latex:latex /data
+
+USER latex
 
 WORKDIR /data
 VOLUME ["/data"]
