@@ -21,7 +21,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: mbogochow/latex
+  BASE_NAME: mbogochow/latex
 
 jobs:
   build:
@@ -50,9 +50,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        flavor: |
-          suffix=-${{ inputs.image-suffix }}
+        images: ${{ env.REGISTRY }}/${{ env.BASE_NAME }}-${{ inputs.image-suffix }}
         tags: |
           type=ref,event=branch
           type=ref,event=pr
@@ -76,7 +74,7 @@ jobs:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.version }}-${{ inputs.image-suffix }}
+        image-ref: ${{ env.REGISTRY }}/${{ env.BASE_NAME }}-${{ inputs.image-suffix }}:${{ inputs.version }}
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true

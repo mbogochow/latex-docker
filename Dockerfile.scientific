@@ -1,4 +1,4 @@
-FROM ghcr.io/mbogochow/latex:ubuntu
+FROM ghcr.io/mbogochow/latex-ubuntu
 
 ARG LATEX_UID=1000
 ARG LATEX_GID=1000
