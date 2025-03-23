@@ -13,7 +13,7 @@ This container helps compiling latex sources without the need to install all lat
 
 All versions are based on Ubuntu: ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex))
 
-- [mbogochow/latex-ubuntu (:latest) - Dockerfile.ubuntu](Dockerfile.ubuntu) Ubuntu TexLive distribution: Old but stable, most needed package: texlive-full (3.9GB)
+- [mbogochow/latex-ubuntu (:latest) - Dockerfile.ubuntu](Dockerfile.ubuntu) Ubuntu TexLive distribution: Old but stable, most needed package: texlive-full (4.2GB)
 - [mbogochow/latex-ctanbasic - Dockerfile (base stage)](Dockerfile) CTAN TexLive Scheme-basic: Up-to-date, only basic packages, base for custom builds (500MB)
 - [mbogochow/latex-ctanfull - Dockerfile (full stage)](Dockerfile) CTAN TexLive Scheme-full: Up-to-date, all packages (5.6GB)
 

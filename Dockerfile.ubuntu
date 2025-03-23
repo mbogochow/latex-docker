@@ -1,3 +1,22 @@
+# Build stage
+FROM ubuntu:noble AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
+
+# Install all required packages
+RUN apt-get update -q && \
+    apt-get install -qy --no-install-recommends \
+    texlive-full \
+    python3-pygments \
+    gnuplot \
+    make \
+    git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Final stage
 FROM ubuntu:noble
 LABEL maintainer="Mike Bogochow"
 
@@ -9,23 +28,23 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=C.UTF-8
 
 # Remove ubuntu user/group and create latex user
-RUN userdel -r ubuntu || true \
-    && groupdel ubuntu || true \
-    && groupadd -g ${LATEX_GID} latex \
-    && useradd -u ${LATEX_UID} -g latex -m latex
+RUN userdel -r ubuntu || true && \
+    groupdel ubuntu || true && \
+    groupadd -g ${LATEX_GID} latex && \
+    useradd -u ${LATEX_UID} -g latex -m latex && \
+    mkdir -p /data && \
+    chown latex:latex /data
 
-RUN apt-get update -q && apt-get install -qy \
-    texlive-full \
-    python3-pygments \
-    gnuplot \
-    make \
-    git \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && mkdir -p /data \
-    && chown latex:latex /data
+# Copy only necessary files from builder
+COPY --from=builder /usr/local/bin/ /usr/local/bin/
+COPY --from=builder /usr/local/share/ /usr/local/share/
+COPY --from=builder /usr/bin/ /usr/bin/
+COPY --from=builder /usr/lib/ /usr/lib/
+COPY --from=builder /usr/share/texmf/ /usr/share/texmf/
+COPY --from=builder /usr/share/texlive/ /usr/share/texlive/
+COPY --from=builder /var/lib/texmf/ /var/lib/texmf/
+COPY --from=builder /etc/texmf/ /etc/texmf/
 
 USER latex
-
 WORKDIR /data
 VOLUME ["/data"]
