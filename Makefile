@@ -10,9 +10,9 @@ LATEX_GID ?= $(shell id -g)
 
 BUILD_ARGS = --build-arg LATEX_UID=$(LATEX_UID) --build-arg LATEX_GID=$(LATEX_GID)
 
-.PHONY: build build_ubuntu build_basic build_full
+.PHONY: build build_ubuntu build_basic build_full build_scientific
 
-build: build_ubuntu build_basic build_full
+build: build_ubuntu build_basic build_full build_scientific
 
 build_ubuntu: Dockerfile.ubuntu
 	@$(DOCKER_CMD) build $(BUILD_ARGS) -f Dockerfile.ubuntu -t $(IMAGE):ubuntu .
@@ -23,4 +23,8 @@ build_basic: Dockerfile.basic
 build_full: build_basic Dockerfile.full
 	@$(DOCKER_CMD) build $(BUILD_ARGS) -f Dockerfile.full -t $(IMAGE):ctanfull .
 
+build_scientific: build_ubuntu Dockerfile.scientific
+	@$(DOCKER_CMD) build $(BUILD_ARGS) -f Dockerfile.scientific -t $(IMAGE):scientific .
+
 default: build
+
