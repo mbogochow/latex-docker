@@ -1,18 +1,16 @@
-Latex docker container
-======================
+# Latex docker container
 
 This container helps compiling latex sources without the need to install all latex packages on your system.
 
-Why should I use this container?
------
+## Why should I use this container?
 
 - Easy setup, compile immediately after image download
 - Preserves UID and GID of local user
 - Use container like local command: `latexdockercmd.sh pdflatex main.tex`
 - Multiple distributions like ubuntu's `texlive-full` to cover all needs
 
-Versions
---------
+## Versions
+
 All versions are based on Ubuntu: ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex))
 
 - [mbogochow/latex:ubuntu (:latest) - Dockerfile.ubuntu](Dockerfile.ubuntu) Ubuntu TexLive distribution: Old but stable, most needed package: texlive-full (3.9GB)
@@ -20,16 +18,17 @@ All versions are based on Ubuntu: ([See all tags](https://github.com/mbogochow/l
 - [mbogochow/latex:ctanfull - Dockerfile (full stage)](Dockerfile) CTAN TexLive Scheme-full: Up-to-date, all packages (5.6GB)
 
 If you need...
+
 - ...the most-stuff-works-out-of-the-box package, try `mbogochow/latex:ubuntu`.
 - ...the most recent version of everything, try `mbogochow/latex:ctanfull`.
 - ...a stable base for your custom texlive build, try `mbogochow/latex:ctanbasic`.
 
 For stability, choose a more specific version tag ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex))
 
-Quick Setup
------------
+## Quick Setup
 
 Compile latex sources using docker:
+
 ```bash
 # Change to your project
 cd my_latex_project
@@ -52,19 +51,17 @@ edit ./latexdockercmd.sh
 ../latexdockercmd.sh /bin/sh -c "pdflatex main.tex && pdflatex main.tex"
 ```
 
-Requirements
-------------
+## Requirements
 
 First, add your local user to docker group (should already be the case):
+
 ```bash
 sudo usermod -aG docker YOURUSERNAME
 ```
 
 The `latexdockercmd.sh` will use your current user and group id to compile.
 
-
-Daemon setup
-------------
+## Daemon setup
 
 If you're working on source in latex, you might want to compile it multiple times and don't want to start a container each time.
 
@@ -81,8 +78,7 @@ latexdockerdaemoncmd.sh pdflatex main.tex
 docker stop latex_daemon
 ```
 
-Customize
----------
+## Customize
 
 If you need additional packages, extend this base image with your own customizations. Below are some example recipes for common setups that you can use as a starting point for your custom Dockerfile:
 
@@ -101,22 +97,24 @@ RUN apt-get update \
 You can create your own Dockerfile using any of these recipes or combine them based on your needs.
 
 Build your custom image:
+
 ```bash
 docker build -t mycustomlateximg .
 ```
 
 Edit `latexdockercmd.sh` to use your image `mycustomlateximg`.
 
-Latex Make
------------------
+## Latex Make
 
 Clean build using `latexmk`:
+
 ```
 mkdir compile
 latexmk -cd -f -jobname=output -outdir=./compile -auxdir=./compile -interaction=batchmode -pdf ./main.tex
 ```
 
 Use `latexmkrc` in your project root:
+
 ```
 # Example: Make glossaries
 add_cus_dep( 'glo', 'gls', 0, 'makeglo2gls' );
@@ -125,23 +123,21 @@ sub makeglo2gls {
 }
 ```
 
+## CTAN Packages
 
-CTAN Packages
--------------
 A list of available ctan packages can be found here: [http://mirror.ctan.org/systems/texlive/tlnet/archive](http://mirror.ctan.org/systems/texlive/tlnet/archive)
 
 Install texlive packages:
+
 ```
 RUN tlmgr install minted
 ```
 
-Contribution
-------------
+## Contribution
 
 If the image is missing a package only specific for you, please don't open an issue or pull request but build your own image as described above.
 If a critical package is missing or you have a recipe for missing packages in a common scenario, please create an issue / PR on [Dockerfile.blueprint](Dockerfile.blueprint).
 
-License
--------
+## License
 
 See [LICENSE](LICENSE) file.
