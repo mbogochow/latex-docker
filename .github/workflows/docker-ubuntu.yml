@@ -6,16 +6,16 @@ on:
     tags: [ "v*.*.*" ]
     paths:
       - 'Dockerfile.ubuntu'
-      - '.github/workflows/docker-ubuntu.yaml'
-      - '.github/workflows/docker-common.yaml'
+      - '.github/workflows/docker-ubuntu.yml'
+      - '.github/workflows/docker-common.yml'
       - 'docker-bake.hcl'
   pull_request:
     types: [closed]
     branches: [ "main" ]
     paths:
       - 'Dockerfile.ubuntu'
-      - '.github/workflows/docker-ubuntu.yaml'
-      - '.github/workflows/docker-common.yaml'
+      - '.github/workflows/docker-ubuntu.yml'
+      - '.github/workflows/docker-common.yml'
       - 'docker-bake.hcl'
   release:
     types: [published]

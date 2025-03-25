@@ -6,16 +6,16 @@ on:
     tags: [ "v*.*.*" ]
     paths:
       - 'Dockerfile'
-      - '.github/workflows/docker-alpine.yaml'
-      - '.github/workflows/docker-common.yaml'
+      - '.github/workflows/docker-alpine.yml'
+      - '.github/workflows/docker-common.yml'
       - 'docker-bake.hcl'
   pull_request:
     types: [closed]
     branches: [ "main" ]
     paths:
       - 'Dockerfile'
-      - '.github/workflows/docker-alpine.yaml'
-      - '.github/workflows/docker-common.yaml'
+      - '.github/workflows/docker-alpine.yml'
+      - '.github/workflows/docker-common.yml'
       - 'docker-bake.hcl'
   release:
     types: [published]
