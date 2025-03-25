@@ -1,0 +1,26 @@
+name: Docker Basic Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*.*.*" ]
+    paths:
+      - 'Dockerfile'
+      - '.github/workflows/docker-basic.yml'
+  pull_request:
+    types: [closed]
+    branches: [ "main" ]
+    paths:
+      - 'Dockerfile'
+      - '.github/workflows/docker-basic.yml'
+  release:
+    types: [published]
+
+jobs:
+  build:
+    uses: ./.github/workflows/common.yml
+    with:
+      image-suffix: basic
+      dockerfile: Dockerfile
+      target: basic
+      cache-scope: basic

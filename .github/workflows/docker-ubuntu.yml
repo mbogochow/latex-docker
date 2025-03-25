@@ -3,14 +3,18 @@ name: Docker Ubuntu Image CI
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*.*.*" ]
     paths:
       - 'Dockerfile.ubuntu'
       - '.github/workflows/docker-ubuntu.yml'
   pull_request:
+    types: [closed]
     branches: [ "main" ]
     paths:
       - 'Dockerfile.ubuntu'
       - '.github/workflows/docker-ubuntu.yml'
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -18,5 +22,5 @@ jobs:
     with:
       image-suffix: ubuntu
       dockerfile: Dockerfile.ubuntu
-      version: ${{ github.ref_name }}
+      target: texlive-full
       cache-scope: ubuntu

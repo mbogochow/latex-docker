@@ -1,23 +1,26 @@
-name: Docker CTANFull Image CI
+name: Docker Full Image CI
 
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*.*.*" ]
     paths:
       - 'Dockerfile'
-      - '.github/workflows/docker-ctanfull.yml'
+      - '.github/workflows/docker-full.yml'
   pull_request:
+    types: [closed]
     branches: [ "main" ]
     paths:
       - 'Dockerfile'
-      - '.github/workflows/docker-ctanfull.yml'
+      - '.github/workflows/docker-full.yml'
+  release:
+    types: [published]
 
 jobs:
   build:
     uses: ./.github/workflows/common.yml
     with:
-      image-suffix: ctanfull
+      image-suffix: full
       dockerfile: Dockerfile
       target: full
-      version: ${{ github.ref_name }}
-      cache-scope: ctanfull
+      cache-scope: full

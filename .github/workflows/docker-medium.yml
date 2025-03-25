@@ -1,0 +1,26 @@
+name: Docker Medium Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*.*.*" ]
+    paths:
+      - 'Dockerfile'
+      - '.github/workflows/docker-medium.yml'
+  pull_request:
+    types: [closed]
+    branches: [ "main" ]
+    paths:
+      - 'Dockerfile'
+      - '.github/workflows/docker-medium.yml'
+  release:
+    types: [published]
+
+jobs:
+  build:
+    uses: ./.github/workflows/common.yml
+    with:
+      image-suffix: medium
+      dockerfile: Dockerfile
+      target: medium
+      cache-scope: medium

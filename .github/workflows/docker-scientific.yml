@@ -3,20 +3,24 @@ name: Docker Scientific Image CI
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*.*.*" ]
     paths:
-      - 'Dockerfile.scientific'
+      - 'Dockerfile.ubuntu'
       - '.github/workflows/docker-scientific.yml'
   pull_request:
+    types: [closed]
     branches: [ "main" ]
     paths:
-      - 'Dockerfile.scientific'
+      - 'Dockerfile.ubuntu'
       - '.github/workflows/docker-scientific.yml'
+  release:
+    types: [published]
 
 jobs:
   build:
     uses: ./.github/workflows/common.yml
     with:
       image-suffix: scientific
-      dockerfile: Dockerfile.scientific
-      version: ${{ github.ref_name }}
+      dockerfile: Dockerfile.ubuntu
+      target: scientific
       cache-scope: scientific

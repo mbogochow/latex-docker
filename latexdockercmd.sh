@@ -1,5 +1,5 @@
 #!/bin/bash
-DEFAULT_IMAGE=mbogochow/latex-ubuntu
+DEFAULT_IMAGE=mbogochow/latex:ubuntu
 IMAGE="$DEFAULT_IMAGE"
 
 usage() {

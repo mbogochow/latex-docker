@@ -13,15 +13,19 @@ This container helps compiling latex sources without the need to install all lat
 
 All versions are based on Ubuntu: ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex))
 
-- [mbogochow/latex-ubuntu (:latest) - Dockerfile.ubuntu](Dockerfile.ubuntu) Ubuntu TexLive distribution: Old but stable, most needed package: texlive-full (4.2GB)
-- [mbogochow/latex-ctanbasic - Dockerfile (base stage)](Dockerfile) CTAN TexLive Scheme-basic: Up-to-date, only basic packages, base for custom builds (500MB)
-- [mbogochow/latex-ctanfull - Dockerfile (full stage)](Dockerfile) CTAN TexLive Scheme-full: Up-to-date, all packages (5.6GB)
+- [mbogochow/latex:ubuntu - Dockerfile.ubuntu (ubuntu stage)](Dockerfile.ubuntu) Ubuntu TexLive distribution: Old but stable, most needed package: texlive-full (4.2GB)
+- [mbogochow/latex:scientific - Dockerfile.ubuntu (scientific stage)](Dockerfile.ubuntu) Ubuntu TexLive distribution plus scientific packages (GB)
+- [mbogochow/latex:minimal - Dockerfile (minimal stage)](Dockerfile) CTAN TexLive Scheme-minimal: minimal packages, base for custom builds (135MB)
+- [mbogochow/latex:basic - Dockerfile (basic stage)](Dockerfile) CTAN TexLive Scheme-basic: only basic packages (218MB)
+- [mbogochow/latex:small - Dockerfile (small stage)](Dockerfile) CTAN TexLive Scheme-small: only essential packages (326MB)
+- [mbogochow/latex:medium - Dockerfile (medium stage)](Dockerfile) CTAN TexLive Scheme-medium: common packages (MB)
+- [mbogochow/latex:full - Dockerfile (full stage)](Dockerfile) CTAN TexLive Scheme-full: all packages (GB)
 
 If you need...
 
-- ...the most-stuff-works-out-of-the-box package, try `mbogochow/latex-ubuntu`.
-- ...the most recent version of everything, try `mbogochow/latex-ctanfull`.
-- ...a stable base for your custom texlive build, try `mbogochow/latex-ctanbasic`.
+- ...the most-stuff-works-out-of-the-box package, try `mbogochow/latex:ubuntu`.
+- ...the most recent version of everything, try `mbogochow/latex:full`.
+- ...a stable base for your custom texlive build, try `mbogochow/latex:basic`.
 
 For stability, choose a more specific version tag ([See all tags](https://github.com/mbogochow/latex-docker/pkgs/container/latex))
 
@@ -49,6 +53,9 @@ edit ./latexdockercmd.sh
 
 # Or make multiple passes (does not start container twice)
 ../latexdockercmd.sh /bin/sh -c "pdflatex main.tex && pdflatex main.tex"
+
+# Alternateve: add the following alias to your shell rc file
+alias texdoc='docker run --rm -i --user="$(id -u):$(id -g)" --net=none -v "$(pwd)":/data "ghcr.io/mbogochow/latex:ubuntu"'
 ```
 
 ## Requirements
@@ -84,7 +91,7 @@ If you need additional packages, extend this base image with your own customizat
 
 ```dockerfile
 # Remember to change your base version if needed
-FROM ghcr.io/mbogochow/latex:main
+FROM ghcr.io/mbogochow/latex:ubuntu
 
 # Example 1: Installing Minted + Pygments for code highlighting
 RUN tlmgr install minted
@@ -109,18 +116,8 @@ Edit `latexdockercmd.sh` to use your image `mycustomlateximg`.
 Clean build using `latexmk`:
 
 ```
-mkdir compile
-latexmk -cd -f -jobname=output -outdir=./compile -auxdir=./compile -interaction=batchmode -pdf ./main.tex
-```
-
-Use `latexmkrc` in your project root:
-
-```
-# Example: Make glossaries
-add_cus_dep( 'glo', 'gls', 0, 'makeglo2gls' );
-sub makeglo2gls {
-    system("makeindex -s \"$_[0].ist\" -t \"$_[0].glg\" -o \"$_[0].gls\" \"$_[0].glo\"" );
-}
+mkdir out
+latexmk -cd -f -jobname=output -outdir=out -auxdir=out -interaction=batchmode -pdf ./main.tex
 ```
 
 ## CTAN Packages

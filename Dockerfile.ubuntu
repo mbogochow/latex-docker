@@ -1,4 +1,3 @@
-# Build stage
 FROM ubuntu:noble AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -16,8 +15,8 @@ RUN apt-get update -q && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Final stage
-FROM ubuntu:noble
+########################################################
+FROM ubuntu:noble AS texlive-full
 LABEL maintainer="Mike Bogochow"
 
 ARG LATEX_UID=1000
@@ -45,6 +44,45 @@ COPY --from=builder /usr/share/texlive/ /usr/share/texlive/
 COPY --from=builder /var/lib/texmf/ /var/lib/texmf/
 COPY --from=builder /etc/texmf/ /etc/texmf/
 
+RUN mkdir -p /data && chown latex:latex /data
+
 USER latex
 WORKDIR /data
 VOLUME ["/data"]
+
+########################################################
+FROM texlive-full AS scientific
+USER root
+
+# Install R and Python dependencies
+RUN apt-get update -q && apt-get install -qy \
+    r-base \
+    r-base-dev \
+    python3-pip \
+    python3-venv \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python scientific packages
+RUN pip3 install --no-cache-dir \
+    numpy \
+    pandas \
+    matplotlib \
+    seaborn \
+    jupyter \
+    scipy
+
+# Install R packages for scientific writing
+RUN R -e "install.packages(c('knitr', 'rmarkdown', 'tidyverse', 'ggplot2'), repos='https://cloud.r-project.org/')"
+
+# Install additional LaTeX packages for scientific writing
+RUN tlmgr install \
+    algorithms \
+    algorithmicx \
+    algorithm2e \
+    siunitx \
+    chemformula \
+    mhchem \
+    physics
+
+USER latex

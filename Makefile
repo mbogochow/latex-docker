@@ -10,21 +10,29 @@ LATEX_GID ?= $(shell id -g)
 
 BUILD_ARGS = --build-arg LATEX_UID=$(LATEX_UID) --build-arg LATEX_GID=$(LATEX_GID)
 
-.PHONY: build ubuntu basic full scientific
+.PHONY: build ubuntu minimal basic small medium full scientific
 
-build: ubuntu basic full scientific
+build: ubuntu minimal basic small medium full scientific
 
-ubuntu: Dockerfile.ubuntu
-	@$(DOCKER_CMD) build $(BUILD_ARGS) -f Dockerfile.ubuntu -t $(IMAGE)-ubuntu .
+minimal: Dockerfile
+	@$(DOCKER_CMD) build $(BUILD_ARGS) --target minimal -t $(IMAGE):minimal .
+
+small: Dockerfile
+	@$(DOCKER_CMD) build $(BUILD_ARGS) --target small -t $(IMAGE):small .
 
 basic: Dockerfile
-	@$(DOCKER_CMD) build $(BUILD_ARGS) --target base -t $(IMAGE)-ctanbasic .
+	@$(DOCKER_CMD) build $(BUILD_ARGS) --target basic -t $(IMAGE):basic .
 
-full: basic Dockerfile
-	@$(DOCKER_CMD) build $(BUILD_ARGS) --target full -t $(IMAGE)-ctanfull .
+medium: Dockerfile
+	@$(DOCKER_CMD) build $(BUILD_ARGS) --target medium -t $(IMAGE):medium .
 
-scientific: ubuntu Dockerfile.scientific
-	@$(DOCKER_CMD) build $(BUILD_ARGS) -f Dockerfile.scientific -t $(IMAGE)-scientific .
+full: Dockerfile
+	@$(DOCKER_CMD) build $(BUILD_ARGS) --target full -t $(IMAGE):full .
+
+ubuntu: Dockerfile.ubuntu
+	@$(DOCKER_CMD) build $(BUILD_ARGS) --target texlive-full -f Dockerfile.ubuntu -t $(IMAGE):ubuntu .
+
+scientific: Dockerfile.ubuntu
+	@$(DOCKER_CMD) build $(BUILD_ARGS) --target scientific -f Dockerfile.ubuntu -t $(IMAGE):scientific .
 
 default: build
-
