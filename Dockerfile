@@ -11,7 +11,7 @@ RUN addgroup -g ${LATEX_GID} latex && \
     mkdir -p /data && \
     chown latex:latex /data
 
-RUN apk add --no-cache perl curl fontconfig libgcc gnupg && \
+RUN apk add --no-cache perl curl fontconfig libgcc libstdc++ gnupg && \
     wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz && \
     mkdir /install-tl-unx && \
     tar -xvf install-tl-unx.tar.gz -C /install-tl-unx --strip-components=1 && \
@@ -20,11 +20,6 @@ RUN apk add --no-cache perl curl fontconfig libgcc gnupg && \
         echo "instopt_adjustpath 0" && \
         echo "tlpdbopt_install_docfiles 0" && \
         echo "tlpdbopt_install_srcfiles 0" \
-        # echo "TEXDIR /opt/texlive/" && \
-        # echo "TEXMFLOCAL /opt/texlive/texmf-local" && \
-        # echo "TEXMFSYSCONFIG /opt/texlive/texmf-config" && \
-        # echo "TEXMFSYSVAR /opt/texlive/texmf-var" && \
-        # echo "TEXMFHOME ~/.texmf" \
     ) > /install-tl-unx/texlive.profile && \
     /install-tl-unx/install-tl -profile /install-tl-unx/texlive.profile && \
     rm -rf /install-tl-unx && \
