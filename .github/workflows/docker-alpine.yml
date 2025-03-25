@@ -1,20 +1,20 @@
-name: ubuntu
+name: alpine
 
 on:
   push:
     branches: [ "main" ]
     tags: [ "v*.*.*" ]
     paths:
-      - 'Dockerfile.ubuntu'
-      - '.github/workflows/docker-ubuntu.yaml'
+      - 'Dockerfile'
+      - '.github/workflows/docker-alpine.yaml'
       - '.github/workflows/docker-common.yaml'
       - 'docker-bake.hcl'
   pull_request:
     types: [closed]
     branches: [ "main" ]
     paths:
-      - 'Dockerfile.ubuntu'
-      - '.github/workflows/docker-ubuntu.yaml'
+      - 'Dockerfile'
+      - '.github/workflows/docker-alpine.yaml'
       - '.github/workflows/docker-common.yaml'
       - 'docker-bake.hcl'
   release:
@@ -25,7 +25,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
     uses: ./.github/workflows/docker-common.yml
     with:
-      dockerfile: Dockerfile.ubuntu
-      bake_target: ubuntu-based
-      cache_scope: ubuntu
-      image_ref: ghcr.io/mbogochow/latex:ubuntu
+      dockerfile: Dockerfile
+      bake_target: alpine
+      cache_scope: alpine
+      image_ref: ghcr.io/mbogochow/latex:minimal

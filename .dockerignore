@@ -2,5 +2,5 @@
 .github
 *.md
 LICENSE
-Makefile
+docker-bake.hcl
 *.sh
