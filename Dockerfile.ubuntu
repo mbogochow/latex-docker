@@ -60,29 +60,28 @@ RUN apt-get update -q && apt-get install -qy \
     r-base-dev \
     python3-pip \
     python3-venv \
+    # Install Python scientific packages
+    python3-numpy \
+    python3-pandas \
+    python3-matplotlib \
+    python3-seaborn \
+    python3-notebook \
+    python3-scipy \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-# Install Python scientific packages
-RUN pip3 install --no-cache-dir \
-    numpy \
-    pandas \
-    matplotlib \
-    seaborn \
-    jupyter \
-    scipy
 
 # Install R packages for scientific writing
 RUN R -e "install.packages(c('knitr', 'rmarkdown', 'tidyverse', 'ggplot2'), repos='https://cloud.r-project.org/')"
 
+# TODO: these should be installed by texlive-full, should create a minimal scientific image based on ctan scheme-basic
 # Install additional LaTeX packages for scientific writing
-RUN tlmgr install \
-    algorithms \
-    algorithmicx \
-    algorithm2e \
-    siunitx \
-    chemformula \
-    mhchem \
-    physics
+# RUN tlmgr install \
+#     algorithms \
+#     algorithmicx \
+#     algorithm2e \
+#     siunitx \
+#     chemformula \
+#     mhchem \
+#     physics
 
 USER latex

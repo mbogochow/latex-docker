@@ -4,8 +4,6 @@ LABEL maintainer="Mike Bogochow"
 ARG LATEX_UID=1000
 ARG LATEX_GID=1000
 
-ENV DEBIAN_FRONTEND=noninteractive
-
 RUN addgroup -g ${LATEX_GID} latex && \
     adduser -u ${LATEX_UID} -G latex -D latex && \
     mkdir -p /data && \
