@@ -3,7 +3,7 @@ name: ubuntu
 on:
   push:
     branches: [ "main" ]
-    tags: [ "v*.*.*" ]
+    tags: [ "v[0-9]+.[0-9]+.[0-9]+*" ]
     paths:
       - 'Dockerfile.ubuntu'
       - '.github/workflows/docker-ubuntu.yml'
@@ -28,4 +28,4 @@ jobs:
       dockerfile: Dockerfile.ubuntu
       bake_target: ubuntu-based
       cache_scope: ubuntu
-      image_ref: ghcr.io/mbogochow/latex:ubuntu
+      image-suffixes: ubuntu,scientific
