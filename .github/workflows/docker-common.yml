@@ -50,6 +50,12 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    # This step generates Docker image tags based on different GitHub events:
+    # - For all builds: Base tag for each suffix (e.g., ghcr.io/mbogochow/latex:minimal)
+    # - For releases (tags): Base tag + tag version (e.g., ghcr.io/mbogochow/latex:minimal-v1.0.0)
+    # - For pushes to main: Base tag + 'dev' and commit SHA (e.g., ghcr.io/mbogochow/latex:minimal-dev)
+    # - For PRs: Base tag + 'dev' and PR number (e.g., ghcr.io/mbogochow/latex:minimal-pr-123)
+    # These tags are later passed to docker/bake-action to tag all built images
     - name: Generate tag rules
       id: tags
       run: |
@@ -57,9 +63,11 @@ jobs:
         image="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
         IFS=',' read -ra suffixes <<< "${{ inputs.image-suffixes }}"
         for suffix in "${suffixes[@]}"; do
+          # Base tag
+          tags="${tags}${image}:${suffix}\n"
+
           # For tags (releases)
           if [[ "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]]; then
-            tags="${tags}${image}:${suffix}\n"
             tags="${tags}${image}:${suffix}-${{ github.ref_name }}\n"
           fi
 
@@ -75,6 +83,7 @@ jobs:
             tags="${tags}${image}:${suffix}-pr-${{ github.event.pull_request.number }}\n"
           fi
         done
+
         echo "tag_list<<EOF" >> $GITHUB_OUTPUT
         echo -e "$tags" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
@@ -92,7 +101,7 @@ jobs:
           *.cache-to=type=gha,mode=max,scope=${{ inputs.cache_scope }}
           *.output=type=registry
           *.args.CI=true
-          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:*=${{ steps.tags.outputs.tag_list }}
+          *.tags=${{ steps.tags.outputs.tag_list }}
 
     # TODO: need to debug failures
     # - name: Run Trivy vulnerability scanner
